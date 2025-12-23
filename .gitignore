@@ -1,34 +1,65 @@
-# dependencies
-/node_modules
-/.pnp
+# =========================
+# Dependencies
+# =========================
+node_modules/
+.pnp/
 .pnp.js
 
-# testing
-/coverage
+# =========================
+# Build outputs
+# =========================
+.next/
+out/
+build/
+dist/
 
-# next.js
-/.next/
-/out/
+# =========================
+# Prisma
+# =========================
+prisma/migrations/
+app/generated/prisma/
 
-# production
-/build
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# =========================
+# Logs
+# =========================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# local env files
-.env*.local
+# =========================
+# Testing / Coverage
+# =========================
+coverage/
 
-# vercel
-.vercel
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
-# typescript
+# =========================
+# Vercel
+# =========================
+.vercel/
+
+# =========================
+# TypeScript
+# =========================
 *.tsbuildinfo
 next-env.d.ts
-/app/generated/prisma
+
+# =========================
+# Misc / Security
+# =========================
+*.pem
+*.key
