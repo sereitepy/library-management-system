@@ -9,13 +9,13 @@ export async function getPendingPickups() {
 }
 
 export async function cancelPendingPickup(transactionId: string) {
-  return prisma.$transaction(async tx => {
-    const transaction = await tx.borrowingTransaction.update({
+  return prisma.$transaction(async prisma => {
+    const transaction = await prisma.borrowingTransaction.update({
       where: { id: transactionId },
       data: { status: 'CANCELLED' },
     })
 
-    await tx.book.update({
+    await prisma.book.update({
       where: { id: transaction.bookId },
       data: {
         availableCopies: { increment: 1 },
@@ -64,30 +64,21 @@ export async function getActiveBorrows(filters?: {
 }
 
 export async function confirmPickup(transactionId: string) {
-  return prisma.$transaction(async tx => {
-    const transaction = await tx.borrowingTransaction.update({
-      where: { id: transactionId },
-      data: {
-        status: 'BORROWED',
-        borrowedDate: new Date(),
-        dueDate: addDays(new Date(), 14),
-      },
-    })
-
-    await tx.book.update({
-      where: { id: transaction.bookId },
-      data: {
-        availableCopies: { decrement: 1 },
-      },
-    })
-
-    return transaction
+  const transaction = await prisma.borrowingTransaction.update({
+    where: { id: transactionId },
+    data: {
+      status: 'BORROWED',
+      borrowedDate: new Date(),
+      dueDate: addDays(new Date(), 14),
+    },
   })
+
+  return transaction
 }
 
 export async function markReturned(transactionId: string) {
-  return prisma.$transaction(async tx => {
-    const transaction = await tx.borrowingTransaction.update({
+  return prisma.$transaction(async prisma => {
+    const transaction = await prisma.borrowingTransaction.update({
       where: { id: transactionId },
       data: {
         status: 'RETURNED',
@@ -95,7 +86,7 @@ export async function markReturned(transactionId: string) {
       },
     })
 
-    await tx.book.update({
+    await prisma.book.update({
       where: { id: transaction.bookId },
       data: {
         availableCopies: { increment: 1 },
